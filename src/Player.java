@@ -10,7 +10,7 @@ public class Player {
         this.chips = 0;
     }
 
-    public List<Card> getHand() {
+    public List<Card> getPlayerHand() {
         return hand;
     }
 
@@ -59,7 +59,7 @@ public class Player {
         else if (Evaluate.straight(hand)) return 5;
         else if (Evaluate.threeOfAKind(hand)) return 3;
         else if (Evaluate.twoPair(hand)) return 2;
-        else if (Evaluate.pairOfJacksOrBetter(hand)) return 1;
+        else if (Evaluate.twoJacksOrAbove(hand)) return 1;
         else return 0;
     }
 }

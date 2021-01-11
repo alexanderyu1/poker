@@ -9,14 +9,6 @@ public class Evaluate {
         return (count == 4);
     }
 
-    public static boolean straightFlush(List<Card> hand) {
-        int count = 0;
-        for (int i = 1; i < hand.size(); i++) {
-            if (Card.getOrderedRank(hand.get(i).getRank()) == Card.getOrderedRank(hand.get(i - 1).getRank()) + 1 && hand.get(i).getSuit().matches(hand.get(i - 1).getSuit())) count++;
-        }
-        return (count == 4);
-    }
-
     public static boolean fourOfAKind(List<Card> hand) {
         int count = 0;
         int maxCount = 0;
@@ -100,12 +92,20 @@ public class Evaluate {
         return (pairCount == 2);
     }
 
-    public static boolean pairOfJacksOrBetter(List<Card> hand) {
+    public static boolean twoJacksOrAbove (List<Card> hand) {
         for (int i = 1; i < hand.size(); i++) {
             if (hand.get(i).getRank().matches(hand.get(i - 1).getRank()) && Card.getOrderedRank(hand.get(i).getRank()) >= 11) {
                 return true;
             }
         }
         return false;
+    }
+
+    public static boolean straightFlush(List<Card> hand) {
+        int count = 0;
+        for (int i = 1; i < hand.size(); i++) {
+            if (Card.getOrderedRank(hand.get(i).getRank()) == Card.getOrderedRank(hand.get(i - 1).getRank()) + 1 && hand.get(i).getSuit().matches(hand.get(i - 1).getSuit())) count++;
+        }
+        return (count == 4);
     }
 }

@@ -43,9 +43,9 @@ public class Poker {
             takeTurn();
 
             player.clearHand();
-            System.out.println("\n#####################");
-            System.out.println("#### -NEXT HAND- ####");
-            System.out.println("#####################");
+            System.out.println();
+            System.out.println("------NEXT HAND------");
+            System.out.println();
         }
 
         endGame();
@@ -54,7 +54,7 @@ public class Poker {
     public void takeTurn() {
         int wager;
         do {
-            System.out.println("\nYou currently have " + player.getChips() + " chip(s). How many will you wager? (Must wager at least 1, up to 25 chips)");
+            System.out.println("\nYou have " + player.getChips() + " chip(s). How many will you wager? (Must wager 1-25 chips)");
             try {
                 wager = in.nextInt();
             }
@@ -63,18 +63,18 @@ public class Poker {
                 in.next();
             }
             if (wager > player.getChips()) {
-                System.out.println("You don't have that many chips.");
+                System.out.println("You don't have enough chips.");
             }
         } while (wager <= 0 || wager > player.getChips() || wager > 25);
         in.nextLine();
         player.addChips(-1 * wager);
 
         System.out.print("\nYour hand: ");
-        System.out.println(player.getHand());
+        System.out.println(player.getPlayerHand());
 
         int cardsToTrade;
         do {
-            System.out.println("\nHow many cards would you like to trade? (Any number from 0 - 3)");
+            System.out.println("\nHow many cards would you like to trade? (0-3)");
             try {
                 cardsToTrade = in.nextInt();
             }
@@ -85,7 +85,7 @@ public class Poker {
         } while (cardsToTrade < 0 || cardsToTrade > 3);
         in.nextLine();
 
-        if (cardsToTrade > 0) System.out.println("\nWhich cards will you trade? (Choose " + cardsToTrade + ", choose the numbered position of the card, not the card itself)");
+        if (cardsToTrade > 0) System.out.println("\nWhich cards will you trade? (Choose " + cardsToTrade + ", choose number of the card, not card itself)");
 
         int[] indexes = new int[cardsToTrade];
         for (int i = 0; i < cardsToTrade; i++) {
@@ -109,12 +109,12 @@ public class Poker {
                             break;
                         }
                     }
-                    if (indexPlusOne > 0 && indexPlusOne <= player.getHand().size()) {
+                    if (indexPlusOne > 0 && indexPlusOne <= player.getPlayerHand().size()) {
                         indexes[i] = indexPlusOne;
-                        System.out.println("Removed " + player.getHand().get(indexPlusOne - 1).toString() + ".");
+                        System.out.println("Removed " + player.getPlayerHand().get(indexPlusOne - 1).toString() + ".");
                     }
                 }
-            } while (indexPlusOne <= 0 || indexPlusOne > player.getHand().size());
+            } while (indexPlusOne <= 0 || indexPlusOne > player.getPlayerHand().size());
             in.nextLine();
         }
 
@@ -123,8 +123,8 @@ public class Poker {
             player.deal(deck.get(0));
             deck.remove(0);
         }
-        for (int i = 0; i < player.getHand().size(); i++) {
-            if (player.getHand().get(i).getRank().matches("X")) {
+        for (int i = 0; i < player.getPlayerHand().size(); i++) {
+            if (player.getPlayerHand().get(i).getRank().matches("X")) {
                 player.removeCard(i);
                 i = -1;
             }
@@ -134,40 +134,40 @@ public class Poker {
 
         if (cardsToTrade > 0) {
             System.out.print("\nYour new hand: ");
-            System.out.println(player.getHand());
+            System.out.println(player.getPlayerHand());
         }
 
         int payOutMultiplier = player.evaluateHand();
         switch (payOutMultiplier) {
             case 100:
-                System.out.println("\nThat's a Royal Flush! It's your lucky day! You win 100 times your original wager!");
+                System.out.println("\nRoyal Flush! You win 100 times your wager.");
                 break;
             case 50:
-                System.out.println("\nA Straight Flush! You win 50 times your original wager.");
+                System.out.println("\nStraight Flush. You win 50 times your wager.");
                 break;
             case 25:
-                System.out.println("\nA Four of a Kind! You win 25 times your original wager.");
+                System.out.println("\nFour of a Kind. You win 25 times your wager.");
                 break;
             case 15:
-                System.out.println("\nA Full House! You win 15 times your original wager.");
+                System.out.println("\nFull House. You win 15 times your wager.");
                 break;
             case 10:
-                System.out.println("\nA Flush! You win 10 times your original wager.");
+                System.out.println("\nFlush. You win 10 times your wager.");
                 break;
             case 5:
-                System.out.println("\nA Straight. You win 5 times your original wager.");
+                System.out.println("\nStraight. You win 5 times your wager.");
                 break;
             case 3:
-                System.out.println("\nA Three of a Kind. You win 3 times your original wager.");
+                System.out.println("\nThree of a Kind. You win 3 times your wager.");
                 break;
             case 2:
-                System.out.println("\nA Two Pair. You win 2 times your original wager.");
+                System.out.println("\nTwo Pair. You win 2 times your wager.");
                 break;
             case 1:
-                System.out.println("\nA Pair of Jacks or Greater. You break even.");
+                System.out.println("\nAPair of Jacks or Greater. Nothing gained or lost.");
                 break;
             case 0:
-                System.out.println("\nLooks like you got a bad hand there... No money for you.");
+                System.out.println("\nBad hand, no money gotten.");
                 break;
         }
         player.addChips(payOutMultiplier * wager);
@@ -186,7 +186,7 @@ public class Poker {
     }
 
     public void endGame() {
-        String endMessage = (player.getChips() == 0) ? "\nYou lost all your chips. Looks like you can't play anymore." : "\nThe deck is empty! The game has ended.";
+        String endMessage = (player.getChips() == 0) ? "\nYou lost all your chips, so you're out of the game." : "\nNo more cards in deck, game ends.";
         System.out.println(endMessage);
 
         System.out.println("\nYou ended with " + player.getChips() + " chips.");
@@ -194,10 +194,10 @@ public class Poker {
         player.clearHand();
         String playAgain;
         do {
-            System.out.println("\nPlay Again? (Yes or No)");
+            System.out.println("\nPlay Again? (y/n)");
             playAgain = in.nextLine().toLowerCase();
-        } while (!playAgain.equals("yes") && !playAgain.equals("no"));
-        if (playAgain.equals("yes")) {
+        } while (!playAgain.equals("y") && !playAgain.equals("n"));
+        if (playAgain.equals("y")) {
             System.out.println("\nReshuffling Deck...");
             game();
         }
@@ -207,7 +207,7 @@ public class Poker {
     }
 
     public static void main(String[] args) {
-        System.out.println("You will face against a CPU player in the card game poker. Good luck!");
+        System.out.println("You will test your luck and skill in the card game poker. have fun!");
         new Poker().game();
     }
 }

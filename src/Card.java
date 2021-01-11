@@ -26,10 +26,10 @@ public class Card {
             return Integer.parseInt(rank);
         } catch (NumberFormatException e) {
             switch (rank) {
-                case "T": return 10;    // for 10s, Jacks, Queens, Kings,
-                case "J": return 11;    // and Aces, we need to apply a
-                case "Q": return 12;    // numeric value to simplify the
-                case "K": return 13;    // sorting of hands and books.
+                case "T": return 10;
+                case "J": return 11;
+                case "Q": return 12;
+                case "K": return 13;
                 case "A": return 14;
             }
         }
@@ -39,9 +39,9 @@ public class Card {
 
     public static int getOrderedSuit(String suit) {
         switch (suit) {
-            case "C": return 1;     // we give each suit a numeric
-            case "D": return 2;     // value to simplify the sorting
-            case "H": return 3;     // of hands.
+            case "C": return 1;
+            case "D": return 2;
+            case "H": return 3;
             case "S": return 4;
         }
 
